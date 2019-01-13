@@ -115,13 +115,13 @@ CREATE TABLE "dim_time" (
 );
 
 CREATE TABLE "dim_location" (
-  "id" int,
-  "x" int,
-  "y" int,
+  "id" int PRIMARY KEY,
+  "x" int NOT NULL,
+  "y" int NOT NULL,
+  "europe" boolean NOT NULL,
   "langitude" double,
   "longitude" double,
-  UNIQUE("x", "y"),
-  UNIQUE("langitude", "longitude")
+  UNIQUE("x", "y", "europe")
 );
 
 ALTER TABLE "fact_prediction" ADD FOREIGN KEY ("type") REFERENCES "dim_prediction_type" ("id");
