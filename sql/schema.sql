@@ -94,7 +94,8 @@ CREATE TABLE "fact_prediction" (
 
 CREATE TABLE "dim_prediction_type" (
   "id" int PRIMARY KEY,
-  "isLong" boolean
+  "is_long" boolean NOT NULL
+  "hours_ahead" integer NOT NULL
 );
 
 CREATE TABLE "dim_date" (
