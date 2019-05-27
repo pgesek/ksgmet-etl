@@ -1,5 +1,5 @@
 CREATE TABLE "fact_prediction" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "type" int,
   "prediction_date" int,
   "prediction_time" int,
@@ -11,9 +11,18 @@ CREATE TABLE "fact_prediction" (
   "acm_convective_percip_predicted" NUMERIC,
   "acm_convective_percip_actual" NUMERIC,
   "acm_convective_percip_delta" NUMERIC,
+  "acm_convective_percip_local_max_predicted" NUMERIC,
+  "acm_convective_percip_local_max_actual" NUMERIC,
+  "acm_convective_percip_local_max_delta" NUMERIC,
+  "acm_convective_percip_local_min_predicted" NUMERIC,
+  "acm_convective_percip_local_min_actual" NUMERIC,
+  "acm_convective_percip_local_min_delta" NUMERIC,
   "acm_total_percip_predicted" NUMERIC,
   "acm_total_percip_actual" NUMERIC,
   "acm_total_percip_delta" NUMERIC,
+  "avg_total_cld_frac_predicted" NUMERIC,
+  "avg_total_cld_frac_actual" NUMERIC,
+  "avg_total_cld_frac_delta" NUMERIC,
   "domain_percip_type_fr_predicted" NUMERIC,
   "domain_percip_type_fr_actual" NUMERIC,
   "domain_percip_type_fr_delta" NUMERIC,
@@ -92,8 +101,8 @@ CREATE TABLE "fact_prediction" (
   "wvc_predicted" NUMERIC,
   "wvc_actual" NUMERIC,
   "wvc_delta" NUMERIC,
-  "x": int,
-  "y": int
+  "x" int,
+  "y" int
 );
 
 CREATE TABLE "dim_prediction_type" (
