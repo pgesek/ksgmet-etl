@@ -150,3 +150,6 @@ ALTER TABLE "fact_prediction" ADD FOREIGN KEY ("prediction_date") REFERENCES "di
 ALTER TABLE "fact_prediction" ADD FOREIGN KEY ("prediction_time") REFERENCES "dim_time" ("id");
 
 ALTER TABLE "fact_prediction" ADD FOREIGN KEY ("location") REFERENCES "dim_location" ("id");
+
+CREATE INDEX pred_length_index ON fact_prediction (prediction_length);
+CREATE INDEX pred_date_index ON fact_prediction (prediction_date);
