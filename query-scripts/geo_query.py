@@ -43,9 +43,9 @@ class Prediction:
 
     def description(self):
         if self.start:
-            return 'All Data'
-        else:
             return '{start}h-{end}h'.format(start=self.start, end=self.end)
+        else:
+            return 'All Data'
 
 
 def execute_query(cur, reg, dt_range, query_field, pred):
