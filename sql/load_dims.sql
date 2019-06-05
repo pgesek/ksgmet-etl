@@ -9,3 +9,6 @@ FROM '<path>/time.csv' DELIMITER ',' CSV HEADER;
 
 COPY dim_prediction_type (id, is_long, hours_ahead)
 FROM '<path>/type.csv' DELIMITER ',' CSV HEADER;
+
+UPDATE dim_location SET longitude = 13.236774 + y * 0.0378444945891919 WHERE europe = false;
+UPDATE dim_location SET langitude = 48.802824 + y * 0.0378444945891919 WHERE europe = false;

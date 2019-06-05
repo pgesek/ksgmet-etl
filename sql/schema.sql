@@ -153,3 +153,4 @@ ALTER TABLE "fact_prediction" ADD FOREIGN KEY ("location") REFERENCES "dim_locat
 
 CREATE INDEX pred_length_index ON fact_prediction (prediction_length);
 CREATE INDEX pred_date_index ON fact_prediction (prediction_date);
+CREATE INDEX pred_coordinates ON fact_prediction (x, y);
