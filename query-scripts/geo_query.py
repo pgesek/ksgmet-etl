@@ -67,6 +67,8 @@ def execute_query(cur, reg, dt_range, query_field, pred):
     if query.endswith('WHERE '):
         query = query[:-6]
 
+    query = query.replace('WHERE  AND', 'WHERE')
+
     print('Executing query: ' + query)
 
     cur.execute(query)
@@ -89,7 +91,7 @@ POMORZE = Coordinates(131, 149, 145, 153, 'Pomorze')
 MAZOWSZE = Coordinates(175, 228, 106, 117, 'Mazowsze')
 POLUDNIE = Coordinates(154, 178, 13, 38, 'Południe')
 
-REGIONS = [POMORZE, MAZOWSZE, POLUDNIE]
+REGIONS = [ALL_DATA, POMORZE, MAZOWSZE, POLUDNIE]
 DATE_RANGES = [DateRange(None, None, 'All Data'),
                DateRange(57, 122, '2018-10-27 to 2018-12-31'),
                DateRange(123, 181, '2019-01-01 to 2019-02-28'),
@@ -181,7 +183,7 @@ try:
                     data = execute_query(cursor, region, date_range, field, prediction)
 
                     for val in data:
-                        sheet.cell(row=x, column=y, value=data[0])
+                        sheet.cell(row=x, column=y, value=val)
                         x += 1
 
                     # Back up to data coll start and go to the next one
@@ -199,7 +201,7 @@ try:
             x += 6
             y = 1
 
-    workbook.save('/home/user/mgr/data.xlsx')
+    workbook.save('D:\\workspace\\MGR\\data.xlsx')
 
 finally:
     if cursor:
