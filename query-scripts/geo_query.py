@@ -16,9 +16,12 @@ class Coordinates:
         self.name = name
 
     def query_part(self):
-        return 'x >= {min_x} AND x <= {max_x} AND y >= {min_y} AND y <= {max_y}'\
-                .format(min_x=self.min_x, max_x=self.max_x, min_y=self.min_y,
-                        max_y=self.max_y)
+        if self.min_x:
+            return 'x >= {min_x} AND x <= {max_x} AND y >= {min_y} AND y <= {max_y}'\
+                    .format(min_x=self.min_x, max_x=self.max_x, min_y=self.min_y,
+                            max_y=self.max_y)
+        else:
+            return ''
 
 
 class DateRange:
@@ -61,6 +64,8 @@ def execute_query(cur, reg, dt_range, query_field, pred):
                 region_query=reg.query_part(),
                 date_range_query=dt_range.query_part(),
                 prediction_query=pred.query_part())
+    if query.endswith('WHERE '):
+        query = query[:-6]
 
     print('Executing query: ' + query)
 
@@ -79,6 +84,7 @@ def execute_query(cur, reg, dt_range, query_field, pred):
 
 
 # Coordinates come from get_geo_params.sql
+ALL_DATA = Coordinates(None, None, None, None, 'All Data')
 POMORZE = Coordinates(131, 149, 145, 153, 'Pomorze')
 MAZOWSZE = Coordinates(175, 228, 106, 117, 'Mazowsze')
 POLUDNIE = Coordinates(154, 178, 13, 38, 'Południe')
