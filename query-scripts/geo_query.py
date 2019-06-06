@@ -54,7 +54,7 @@ class Prediction:
         if self.start:
             return '{start}h-{end}h'.format(start=self.start, end=self.end)
         else:
-            return 'All Data'
+            return 'Wszystko'
 
 
 def execute_query(cur, reg, dt_range, query_field, pred):
@@ -86,16 +86,16 @@ def execute_query(cur, reg, dt_range, query_field, pred):
 
 
 # Coordinates come from get_geo_params.sql
-ALL_DATA = Coordinates(None, None, None, None, 'All Data')
+ALL_DATA = Coordinates(None, None, None, None, 'Wszystkie dane')
 POMORZE = Coordinates(131, 149, 145, 153, 'Pomorze')
 MAZOWSZE = Coordinates(175, 228, 106, 117, 'Mazowsze')
 POLUDNIE = Coordinates(154, 178, 13, 38, 'Południe')
 
 REGIONS = [ALL_DATA, POMORZE, MAZOWSZE, POLUDNIE]
-DATE_RANGES = [DateRange(None, None, 'All Data'),
-               DateRange(57, 122, '2018-10-27 to 2018-12-31'),
-               DateRange(123, 181, '2019-01-01 to 2019-02-28'),
-               DateRange(182, 213, '2019-03-01 to 2019-04-01')]
+DATE_RANGES = [DateRange(None, None, 'cały przedział czasowy'),
+               DateRange(57, 122, '2018-10-27 do 2018-12-31'),
+               DateRange(123, 181, '2019-01-01 do 2019-02-28'),
+               DateRange(182, 213, '2019-03-01 do 2019-04-01')]
 FIELDS = ['t2mean2m_delta', 'tmin2m_delta', 'tmax2m_delta']
 PREDICTIONS = [Prediction(None, None),
                Prediction(4, 6),
@@ -155,21 +155,25 @@ try:
                 header_cell.font = BOLD_FONT
                 header_cell.alignment = Alignment(horizontal='center')
 
-                x += 2
+                x += 1
 
-                cell = sheet.cell(row=x, column=y, value='Ilość wierszy prognoz')
+                cell = sheet.cell(row=x, column=y, value='Odległosć prognozy')
                 cell.font = BOLD_FONT
                 x += 1
 
-                cell = sheet.cell(row=x, column=y, value='Średnia delta')
+                cell = sheet.cell(row=x, column=y, value='Ilość analizowanych prognoz')
                 cell.font = BOLD_FONT
                 x += 1
 
-                cell = sheet.cell(row=x, column=y, value='Średnia delta z abs')
+                cell = sheet.cell(row=x, column=y, value='Średnia różnica')
+                cell.font = BOLD_FONT
+                x += 1
+
+                cell = sheet.cell(row=x, column=y, value='Średnia różnica wartości bezwzględnych')
                 cell.font = BOLD_FONT
 
                 col = sheet.column_dimensions[get_column_letter(y)]
-                col.width = 25
+                col.width = 40
 
                 # Go to data coll
                 x -= 3
