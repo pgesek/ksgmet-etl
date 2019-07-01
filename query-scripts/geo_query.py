@@ -58,7 +58,7 @@ class Prediction:
 
 
 def execute_query(cur, reg, dt_range, query_field, pred):
-    query = ('SELECT COUNT(*), AVG({field}), AVG(ABS({field})) FROM fact_prediction' +
+    query = ('SELECT COUNT(*), AVG({field}), AVG(ABS({field})), STDDEV_POP({field}) FROM fact_prediction' +
              ' WHERE {region_query}{date_range_query}{prediction_query}')\
         .format(field=query_field,
                 region_query=reg.query_part(),
@@ -79,8 +79,8 @@ def execute_query(cur, reg, dt_range, query_field, pred):
           .format(region=reg.name, period=dt_range.description, field=query_field,
                   prediction=prediction.description()))
 
-    print('Row count: {count}, AVG: {avg}, ABS AVG: {abs_avg}'
-          .format(count=row[0], avg=row[1], abs_avg=row[2]))
+    print('Row count: {count}, AVG: {avg}, ABS AVG: {abs_avg}, STD DEVIATION: {std_dev}'
+          .format(count=row[0], avg=row[1], abs_avg=row[2], std_dev=row[3]))
 
     return row
 
@@ -155,6 +155,10 @@ try:
                 header_cell.font = BOLD_FONT
                 header_cell.alignment = Alignment(horizontal='center')
 
+                # Bold the column
+                col = sheet.column_dimensions[get_column_letter(y)]
+                col.width = 40
+
                 x += 1
 
                 cell = sheet.cell(row=x, column=y, value='Odległosć prognozy')
@@ -171,12 +175,13 @@ try:
 
                 cell = sheet.cell(row=x, column=y, value='Średnia różnica wartości bezwzględnych')
                 cell.font = BOLD_FONT
+                x += 1
 
-                col = sheet.column_dimensions[get_column_letter(y)]
-                col.width = 40
+                cell = sheet.cell(row=x, column=y, value='Odchylenie standardowe')
+                cell.font = BOLD_FONT
 
                 # Go to data coll
-                x -= 3
+                x -= 4
                 y += 1
 
                 for prediction in PREDICTIONS:
@@ -192,7 +197,7 @@ try:
 
                     # Back up to data coll start and go to the next one
                     y += 1
-                    x -= 4
+                    x -= 5
 
                 # Go back to header
                 x -= 1
@@ -202,7 +207,7 @@ try:
                 y += 1
 
             # New field, 6 = 5 data rows and one space
-            x += 6
+            x += 7
             y = 1
 
     workbook.save('D:\\workspace\\MGR\\data.xlsx')
