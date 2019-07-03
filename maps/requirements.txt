@@ -1,6 +1,4 @@
 psycopg2
-plotly
-pandas
 geopandas
 geoplot
 geojson

@@ -2,6 +2,17 @@ from geojson import dump, Polygon, Feature, FeatureCollection
 
 
 def generate_geojson(filename, prop_dict, default_props):
+
+    regions = ['shoreline']
+    region_ids_dict = dict()
+
+    for region in regions:
+        with open('data/regions/{region}_ids.txt'.format(region=region),
+                  'r') as file:
+            lines = file.readlines()
+            ids = [int(line.strip()) for line in lines]
+            region_ids_dict[region] = ids
+
     lon_start = 13.236774
     lat_start = 48.802824
     lat_step = lon_step = 0.0378444945891919
@@ -19,10 +30,12 @@ def generate_geojson(filename, prop_dict, default_props):
             polygon = Polygon([[(lon, lat), (lon + lon_step, lat), (lon + lon_step, lat + lat_step),
                                 (lon, lat + lat_step), (lon, lat)]])
 
-            props = default_props if default_props else {}
+            props = dict(default_props) if default_props else {}
             loc_id = calc_location_id(lon_index, lat_index)
             if loc_id in prop_dict:
-                props = prop_dict[loc_id]
+                props = dict(prop_dict[loc_id])
+
+            add_region_props(props, loc_id, region_ids_dict)
 
             features.append(Feature(geometry=polygon, properties=props))
 
@@ -35,3 +48,12 @@ def generate_geojson(filename, prop_dict, default_props):
 def calc_location_id(x, y):
     start_pl_locations = 24445
     return start_pl_locations + (170 * x) + y
+
+
+def add_region_props(props, loc_id, region_ids_dict):
+    for region in region_ids_dict:
+        region_ids = region_ids_dict[region]
+        if loc_id in region_ids:
+            props[region] = 1
+        else:
+            props[region] = 0
