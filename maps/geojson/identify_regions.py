@@ -2,7 +2,7 @@ import psycopg2
 from shapely.geometry import shape, Point
 import json
 
-FILES = ['shoreline']
+FILES = ['shoreline', 'rural', 'rural2', 'mountains']
 
 LAT_STEP = LON_STEP = 0.0378444945891919
 

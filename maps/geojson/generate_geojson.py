@@ -1,9 +1,12 @@
 from geojson import dump, Polygon, Feature, FeatureCollection
 
+POMORZE = 'pomorze'
+MAZOWSZE = 'mazowsze'
+POLUDNIE = 'poludnie'
 
 def generate_geojson(filename, prop_dict, default_props):
 
-    regions = ['shoreline']
+    regions = ['shoreline', 'rural', 'rural2', 'mountains']
     region_ids_dict = dict()
 
     for region in regions:
@@ -36,6 +39,7 @@ def generate_geojson(filename, prop_dict, default_props):
                 props = dict(prop_dict[loc_id])
 
             add_region_props(props, loc_id, region_ids_dict)
+            add_old_region_props(props, lon_index, lat_index)
 
             features.append(Feature(geometry=polygon, properties=props))
 
@@ -57,3 +61,20 @@ def add_region_props(props, loc_id, region_ids_dict):
             props[region] = 1
         else:
             props[region] = 0
+
+
+def add_old_region_props(props, x, y):
+    if 131 < x < 149 and 145 < y < 153:
+        props[POMORZE] = 1
+    else:
+        props[POMORZE] = 0
+
+    if 175 < x < 228 and 106 < y < 117:
+        props[MAZOWSZE] = 1
+    else:
+        props[MAZOWSZE] = 0
+
+    if 154 < x < 178 and 13 < y < 38:
+        props[POLUDNIE] = 1
+    else:
+        props[POLUDNIE] = 0
