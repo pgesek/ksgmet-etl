@@ -212,7 +212,7 @@ try:
 
                 x += 1
 
-                cell = sheet.cell(row=x, column=y, value='Odległosć prognozy')
+                cell = sheet.cell(row=x, column=y, value='Odległość prognozy')
                 cell.font = BOLD_FONT
                 x += 1
 
