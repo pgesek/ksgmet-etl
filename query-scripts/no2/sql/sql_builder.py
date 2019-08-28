@@ -14,13 +14,19 @@ class SqlBuilder:
 
     def where(self, clause):
         if 'WHERE' not in self.query:
-            self.query += ' WHERE '
+            self.query += ' WHERE ('
         else:
-            self.query += ' AND '
+            self.query += ' AND ('
 
         self.query += clause
+        self.query += ')'
 
         return self
+
+    def add_junk_filter(self):
+        self.where('tmin2m != -999000000 AND tmin2m_delta < 200 AND ' +
+                   'tmax2m != -999000000 AND tmax2m_delta < 200 AND' +
+                   't2mean2m != -999000000 AND t2mean2m_delta < 200')
 
     def build(self):
         return self.query
