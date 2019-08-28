@@ -23,10 +23,11 @@ class SqlBuilder:
 
         return self
 
-    def add_junk_filter(self):
+    def with_junk_filter(self):
         self.where('tmin2m != -999000000 AND tmin2m_delta < 200 AND ' +
                    'tmax2m != -999000000 AND tmax2m_delta < 200 AND' +
                    't2mean2m != -999000000 AND t2mean2m_delta < 200')
+        return self
 
     def build(self):
         return self.query
