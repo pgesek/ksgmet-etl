@@ -1,7 +1,8 @@
 class RegionSpec:
 
-    def __init__(self, name):
+    def __init__(self, name, map_dir):
         self.name = name
+        self.map_dir = map_dir
 
     def requires_clause(self):
         return self.name is not None
@@ -10,8 +11,8 @@ class RegionSpec:
         if not self.requires_clause():
             return 'true'
 
-        with open('maps/geojson/data/regions/' + self.name + '.txt') as id_file:
-            ids = id_file.readlines()
+        with open(self.map_dir + '\\geojson\\data\\regions\\' + self.name + '_ids.txt') as id_file:
+            ids = id_file.read().splitlines()
 
         id_query_list = ', '.join(ids)
 

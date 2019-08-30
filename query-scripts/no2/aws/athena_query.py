@@ -12,6 +12,8 @@ class AthenaQuery:
 
         self.client = boto3.client('athena')
         self.query_id = None
+        self.result_received = False
+        self.result = None
 
     def execute_and_wait_for_result(self):
         self.execute()
@@ -56,6 +58,9 @@ class AthenaQuery:
                 finished = True
 
     def retrieve_result(self):
+        if self.result_received:
+            return self.result
+
         if self.query_id is None:
             raise Exception("Cannot retrieve results for query that has not executed")
 
@@ -68,4 +73,13 @@ class AthenaQuery:
         rows = response['ResultSet']['Rows']
         parsed_rows = [row['Data']['VarCharValue'] for row in rows[1:]]
 
+        self.result_received = True
+        self.result = parsed_rows
+
         return parsed_rows
+
+    def get_downloaded_result(self):
+        if self.result_received:
+            return self.result
+        else:
+            raise Exception('No result downloaded for this query')
