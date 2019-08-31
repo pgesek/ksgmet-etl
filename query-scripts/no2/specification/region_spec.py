@@ -9,7 +9,7 @@ class RegionSpec:
 
     def to_in_clause(self):
         if not self.requires_clause():
-            return 'true'
+            return 'TRUE'
 
         with open(self.map_dir + '\\geojson\\data\\regions\\' + self.name + '_ids.txt') as id_file:
             ids = id_file.read().splitlines()

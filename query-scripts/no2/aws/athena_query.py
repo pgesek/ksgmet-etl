@@ -5,6 +5,9 @@ WAIT = 10
 
 
 class AthenaQuery:
+
+    VAR_CHAR_VAL = 'VarCharValue'
+
     def __init__(self, db, sql, output_key):
         self.db = db
         self.sql = sql
@@ -21,6 +24,8 @@ class AthenaQuery:
         return self.retrieve_result()
 
     def execute(self):
+        print('Executing: ' + self.sql)
+
         response = self.client.start_query_execution(
             QueryString=self.sql,
             QueryExecutionContext={
@@ -68,18 +73,46 @@ class AthenaQuery:
             QueryExecutionId=self.query_id
         )
 
-        print(response)
-
-        rows = response['ResultSet']['Rows']
-        parsed_rows = [row['Data']['VarCharValue'] for row in rows[1:]]
+        print('Response: ' + str(response))
 
         self.result_received = True
-        self.result = parsed_rows
+        self.result = self.parse_result(response)
 
-        return parsed_rows
+        return self.result
 
     def get_downloaded_result(self):
         if self.result_received:
             return self.result
         else:
             raise Exception('No result downloaded for this query')
+
+    @staticmethod
+    def parse_result(response):
+        rows = response['ResultSet']['Rows']
+
+        header_list = rows[0]['Data']
+        headers = [header_dict[AthenaQuery.VAR_CHAR_VAL] for header_dict in header_list]
+
+        data_rows = rows[1:]
+
+        result = []
+        for data_row in data_rows:
+
+            data_list = data_row['Data']
+            values = [value_dict.get(AthenaQuery.VAR_CHAR_VAL, '') for value_dict in data_list]
+
+            result_row = dict()
+            for i in range(len(headers)):
+                header = headers[i]
+                value = values[i]
+
+                result_row[header] = value
+
+            result.append(result_row)
+
+        return result
+
+    @staticmethod
+    def extract_varchar_values(rows):
+        return [[dictionary.get('VarCharValue', '') for dictionary in row]
+                for row in rows]
