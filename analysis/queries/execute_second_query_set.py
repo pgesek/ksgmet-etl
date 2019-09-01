@@ -5,7 +5,7 @@ from specification.region_spec import RegionSpec
 from specification.hours_spec import HoursSpec
 from specification.hour_spec_list import HourSpecList
 
-DEST_PATH = 'D:\\workspace\\MGR'
+DEST_PATH = 'D:\\workspace\\MGR\\second_analysis'
 MAP_DIR = 'D:\\workspace\\MGR\\ksgmet-etl\\maps'
 
 

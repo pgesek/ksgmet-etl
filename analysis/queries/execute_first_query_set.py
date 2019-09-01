@@ -307,7 +307,7 @@ def run():
                 x += 9
                 y = 1
 
-        workbook.save('D:\\workspace\\MGR\\data.xlsx')
+        workbook.save('D:\\workspace\\MGR\\first_analysis\\data.xlsx')
 
     finally:
         if cursor:
