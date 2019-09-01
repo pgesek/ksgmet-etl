@@ -49,7 +49,7 @@ def run(db, table):
     data = execute_query(db, table)
 
     for row in data:
-        location = row['location']
+        location = int(row['location'])
 
         obj_props = dict({
             'count': row['count'],
