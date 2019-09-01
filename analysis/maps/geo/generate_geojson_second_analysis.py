@@ -17,9 +17,6 @@ DEFAULT_PROPS = dict({
     'tmin2m_delta_std_dev': 0.0
 })
 
-DB = 'ksgmet-test'
-TABLE = 'test'
-
 
 def execute_query(db, table):
 
@@ -45,11 +42,11 @@ def execute_query(db, table):
     return athena_query.execute_and_wait_for_result()
 
 
-def run():
+def run(db, table):
 
     props = dict()
 
-    data = execute_query(DB, TABLE)
+    data = execute_query(db, table)
 
     for row in data:
         location = row['location']
@@ -71,6 +68,6 @@ def run():
 
     print('Generating GeoJSON')
 
-    generate_geojson('maps/geo/data/second_analysis/' + DB + '.geojson', props, DEFAULT_PROPS)
+    generate_geojson('maps/geo/data/second_analysis/' + db + '.geojson', props, DEFAULT_PROPS)
 
     print('GeoJSON generated')
