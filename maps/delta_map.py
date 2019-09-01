@@ -16,7 +16,7 @@ poland = gpd.read_file('https://gist.githubusercontent.com/filipstachura/391ecb7
                        '/b0793391ab0478e0d92052d204e7af493a7ecc92/poland_woj.json')
 
 for file in FILES:
-    geo_file = 'geojson/data/first_analysis/{file}.geojson'.format(file=file)
+    geo_file = 'geo/data/first_analysis/{file}.geojson.g'.format(file=file)
     data = gpd.read_file(geo_file)
 
     for field in FIELDS:

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 REGIONS = ['shoreline', 'rural', 'rural2', 'mountains', 'pomorze',
            'mazowsze', 'poludnie']
 
-rectangles = gpd.read_file('geojson/data/rectangles.geojson')
+rectangles = gpd.read_file('geo/data/rectangles.geojson')
 poland = gpd.read_file('https://gist.githubusercontent.com/filipstachura/391ecb779d56483c070616a4d9239cc7/raw'
                        '/b0793391ab0478e0d92052d204e7af493a7ecc92/poland_woj.json')
 

@@ -1,5 +1,9 @@
 class SqlBuilder:
 
+    CLEANER_CLAUSE = 'tmin2m_predicted > 273 AND tmin2m_actual > 273 AND tmin2m_delta < 50 AND '\
+                   'tmax2m_predicted > 273 AND tmax2m_actual > 273 AND tmax2m_delta < 50 AND '\
+                   't2mean2m_predicted > 273 AND t2mean2m_actual > 273 AND t2mean2m_delta < 50'
+
     def __init__(self):
         self.query = 'SELECT ${fields} FROM ${table}'
 
@@ -28,9 +32,7 @@ class SqlBuilder:
         return self
 
     def with_junk_filter(self):
-        self.where('tmin2m_predicted != -999000000 AND tmin2m_actual != -999000000 AND tmin2m_delta < 200 AND ' +
-                   'tmax2m_predicted != -999000000 AND tmax2m_actual != -999000000 AND tmax2m_delta < 200 AND ' +
-                   't2mean2m_predicted != -999000000 AND t2mean2m_actual != -999000000  AND t2mean2m_delta < 200')
+        self.where(SqlBuilder.CLEANER_CLAUSE)
         return self
 
     def build(self):

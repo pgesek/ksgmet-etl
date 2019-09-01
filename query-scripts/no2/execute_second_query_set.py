@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_NAME = 'ksgmet-test'
-DB_TABLE = 'test'
+DB_NAME = 'ksgmet-may'
+DB_TABLE = 'may'
 DEST_PATH = 'D:\\workspace\\MGR'
 MAP_DIR = 'D:\\workspace\\MGR\\ksgmet-etl\\maps'
 

@@ -2,7 +2,7 @@ import geopandas as gpd
 import geoplot
 import geoplot.crs as gcrs
 
-rectangles = gpd.read_file('geojson/data/rectangles.geojson')
+rectangles = gpd.read_file('geo/data/rectangles.geojson')
 europe = gpd.read_file('https://raw.githubusercontent.com/leakyMirror/map-of-europe/master/GeoJSON/europe.geojson')
 poland = gpd.read_file('https://gist.githubusercontent.com/filipstachura/391ecb779d56483c070616a4d9239cc7/raw'
                        '/b0793391ab0478e0d92052d204e7af493a7ecc92/poland_woj.json')

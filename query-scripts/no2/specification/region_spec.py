@@ -11,7 +11,7 @@ class RegionSpec:
         if not self.requires_clause():
             return 'TRUE'
 
-        with open(self.map_dir + '\\geojson\\data\\regions\\' + self.name + '_ids.txt') as id_file:
+        with open(self.map_dir + '\\geo\\data\\regions\\' + self.name + '_ids.txt') as id_file:
             ids = id_file.read().splitlines()
 
         id_query_list = ', '.join(ids)

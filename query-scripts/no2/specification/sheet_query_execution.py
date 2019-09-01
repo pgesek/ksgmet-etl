@@ -5,7 +5,7 @@ import uuid
 class SheetQueryExecution:
     def __init__(self, fields, hour_spec_list):
         self.fields = fields
-        self.hour_spec_list=hour_spec_list
+        self.hour_spec_list = hour_spec_list
 
     def execute(self, sql_builder, athena_query_builder):
         sql_queries = [

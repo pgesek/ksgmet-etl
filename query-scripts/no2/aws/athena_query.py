@@ -16,7 +16,8 @@ class AthenaQuery:
         self.client = boto3.client('athena')
         self.query_id = None
         self.result_received = False
-        self.result = None
+        self.result = []
+        self.headers = None
 
     def execute_and_wait_for_result(self):
         self.execute()
@@ -69,14 +70,29 @@ class AthenaQuery:
         if self.query_id is None:
             raise Exception("Cannot retrieve results for query that has not executed")
 
-        response = self.client.get_query_results(
-            QueryExecutionId=self.query_id
-        )
+        next_token = None
+        first_run = True
 
-        print('Response: ' + str(response))
+        while first_run or next_token:
+            first_run = False
+
+            if next_token:
+                response = self.client.get_query_results(
+                    QueryExecutionId=self.query_id,
+                    NextToken=next_token
+                )
+            else:
+                response = self.client.get_query_results(
+                    QueryExecutionId=self.query_id
+                )
+
+            print('Response: ' + str(response))
+
+            next_token = response.get('NextToken', None)
+
+            self.result += self.parse_result(response)
 
         self.result_received = True
-        self.result = self.parse_result(response)
 
         return self.result
 
@@ -86,14 +102,16 @@ class AthenaQuery:
         else:
             raise Exception('No result downloaded for this query')
 
-    @staticmethod
-    def parse_result(response):
+    def parse_result(self, response):
         rows = response['ResultSet']['Rows']
 
-        header_list = rows[0]['Data']
-        headers = [header_dict[AthenaQuery.VAR_CHAR_VAL] for header_dict in header_list]
+        if self.headers:
+            data_rows = rows
+        else:
+            header_list = rows[0]['Data']
+            self.headers = [header_dict[AthenaQuery.VAR_CHAR_VAL] for header_dict in header_list]
 
-        data_rows = rows[1:]
+            data_rows = rows[1:]
 
         result = []
         for data_row in data_rows:
@@ -102,8 +120,8 @@ class AthenaQuery:
             values = [value_dict.get(AthenaQuery.VAR_CHAR_VAL, '') for value_dict in data_list]
 
             result_row = dict()
-            for i in range(len(headers)):
-                header = headers[i]
+            for i in range(len(self.headers)):
+                header = self.headers[i]
                 value = values[i]
 
                 result_row[header] = value
