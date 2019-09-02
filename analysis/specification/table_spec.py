@@ -1,8 +1,17 @@
+from .field_keys import map_keys
+
+
 class TableSpec:
     def __init__(self, field):
         self.field = field
 
-    def write_to_doc(self, doc, hour_spec_list, results):
+    def write_to_doc(
+            self,
+            doc,
+            hour_spec_list,
+            results,
+            img_dir,
+            include_maps):
         data = dict([
             ('title', 'Pole: ' + self.field),
             ('col_headers', hour_spec_list.header_list()),
@@ -18,6 +27,8 @@ class TableSpec:
 
         doc.write_table(data)
 
-    @staticmethod
-    def _transpose(array):
-        return [[r[col] for r in array] for col in range(len(array[0]))]
+        if include_maps:
+            for key in map_keys(self.field):
+                img_path = img_dir + '\\' + key + '.png'
+
+                doc.write_image(img_path)

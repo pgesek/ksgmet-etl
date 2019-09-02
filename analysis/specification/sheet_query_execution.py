@@ -1,5 +1,6 @@
 from copy import copy
 import uuid
+from .field_keys import field_keys
 
 
 class SheetQueryExecution:
@@ -54,7 +55,7 @@ class SheetQueryExecution:
         tables = dict()
         for field in self.fields:
             table = []
-            for key in SheetQueryExecution._keys(field):
+            for key in field_keys(field):
                 table_row = []
                 for hours_spec in self.hour_spec_list.hour_specs:
                     row = SheetQueryExecution._find_row(results, hours_spec)
@@ -63,15 +64,6 @@ class SheetQueryExecution:
                 table.append(table_row)
             tables[field] = table
         return tables
-
-    @staticmethod
-    def _keys(field):
-        return [
-            'count',
-            field + '_delta_avg',
-            field + '_delta_avg_abs',
-            field + '_delta_std_dev',
-        ]
 
     @staticmethod
     def _execute_and_gather_athena_queries(athena_queries):

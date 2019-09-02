@@ -4,12 +4,20 @@ from .sheet_query_execution import SheetQueryExecution
 
 class SheetSpec:
 
-    def __init__(self, name, description, region_spec, table_specs, hour_spec_list):
+    def __init__(
+            self,
+            name,
+            description,
+            region_spec,
+            table_specs,
+            hour_spec_list,
+            include_maps):
         self.name = name
         self.description = description
         self.region_spec = region_spec
         self.table_specs = table_specs
         self.hour_spec_list = hour_spec_list
+        self.include_maps = include_maps
 
         self.data = []
 
@@ -27,12 +35,16 @@ class SheetSpec:
             athena_query_builder=athena_query_builder
         )
 
-    def write_to_doc(self, doc):
+    def write_to_doc(self, doc, img_dir):
         doc.create_sheet(title=self.name, description=self.description)
+
+        self.region_spec.write_overview_map(doc)
 
         for table_spec in self.table_specs:
             table_spec.write_to_doc(
                 doc=doc,
                 hour_spec_list=self.hour_spec_list,
-                results=self.data[table_spec.field]
+                results=self.data[table_spec.field],
+                img_dir=img_dir,
+                include_maps=self.include_maps
             )

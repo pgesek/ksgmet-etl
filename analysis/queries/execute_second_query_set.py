@@ -7,6 +7,8 @@ from specification.hour_spec_list import HourSpecList
 
 DEST_PATH = 'D:\\workspace\\MGR\\second_analysis'
 MAP_DIR = 'D:\\workspace\\MGR\\ksgmet-etl\\maps'
+MAP_IMG_DIR = 'D:\\workspace\\MGR\\maps\\second_analysis'
+OVERVIEW_MAP_PATH = 'D:\\workspace\\MGR\\maps\\regions'
 
 
 def run(db, table):
@@ -123,11 +125,15 @@ def run(db, table):
         db_name=db,
         db_table=table,
         use_mocks=False,
+        map_dir=MAP_IMG_DIR,
         sheet_specs=[
             SheetSpec(
                 name='Wszystkie dane',
                 description='Placeholder',
-                region_spec=RegionSpec(name=None, map_dir=MAP_DIR),
+                region_spec=RegionSpec(
+                    name=None,
+                    map_dir=MAP_DIR
+                ),
                 table_specs=[
                     TableSpec(
                         field='t2mean2m'
@@ -139,12 +145,17 @@ def run(db, table):
                         field='tmax2m'
                     )
                 ],
-                hour_spec_list=hour_specs
+                hour_spec_list=hour_specs,
+                include_maps=True
             ),
             SheetSpec(
                 name='Góry',
                 description='Placeholder',
-                region_spec=RegionSpec(name='mountains', map_dir=MAP_DIR),
+                region_spec=RegionSpec(
+                    name='mountains',
+                    map_dir=MAP_DIR,
+                    overview_map_path=OVERVIEW_MAP_PATH + '\\mountains.png'
+                ),
                 table_specs=[
                     TableSpec(
                         field='t2mean2m'
@@ -156,12 +167,17 @@ def run(db, table):
                         field='tmax2m'
                     )
                 ],
-                hour_spec_list=hour_specs
+                hour_spec_list=hour_specs,
+                include_maps=False
             ),
             SheetSpec(
                 name='Wybrzeże',
                 description='Placeholder',
-                region_spec=RegionSpec(name='shoreline', map_dir=MAP_DIR),
+                region_spec=RegionSpec(
+                    name='shoreline',
+                    map_dir=MAP_DIR,
+                    overview_map_path=OVERVIEW_MAP_PATH + '\\shoreline.png'
+                ),
                 table_specs=[
                     TableSpec(
                         field='t2mean2m'
@@ -173,12 +189,17 @@ def run(db, table):
                         field='tmax2m'
                     )
                 ],
-                hour_spec_list=hour_specs
+                hour_spec_list=hour_specs,
+                include_maps=False,
             ),
             SheetSpec(
                 name='Teren wiejski',
                 description='Placeholder',
-                region_spec=RegionSpec(name='rural', map_dir=MAP_DIR),
+                region_spec=RegionSpec(
+                    name='rural',
+                    map_dir=MAP_DIR,
+                    overview_map_path=OVERVIEW_MAP_PATH + '\\rural.png'
+                ),
                 table_specs=[
                     TableSpec(
                         field='t2mean2m'
@@ -190,8 +211,9 @@ def run(db, table):
                         field='tmax2m'
                     )
                 ],
-                hour_spec_list=hour_specs
-            )
+                hour_spec_list=hour_specs,
+                include_maps=False
+            ),
         ]
     )
 

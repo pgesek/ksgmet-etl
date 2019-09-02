@@ -1,13 +1,19 @@
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Font,  Alignment
 from openpyxl.utils import get_column_letter
+from openpyxl.drawing.image import Image
 
 
 class XlsxDoc:
 
     BOLD_FONT = Font(bold=True)
-    DESC_CELL_LENGTH = 10
+    DESC_CELL_LENGTH = 2
     COL_WIDTH = 35
+
+    IMG_NUM_OF_COLS = 2
+    IMG_HEIGHT = 300
+    IMG_ROW_HEIGHT = 250
+    IMG_WIDTH = 400
 
     def __init__(self):
         self.workbook = Workbook()
@@ -31,14 +37,17 @@ class XlsxDoc:
             start_row=self.x,
             start_column=self.y,
             end_row=self.x,
-            end_column=self.y + XlsxDoc.DESC_CELL_LENGTH
+            end_column=self.y + XlsxDoc.DESC_CELL_LENGTH - 1
         )
         desc_cell = self._write_cell(description)
         desc_cell.alignment = Alignment(wrap_text=True, vertical='top')
 
-        self._next_row()
+        self._move_column(self.DESC_CELL_LENGTH)
 
     def write_table(self, data):
+        self._next_row()
+        self._first_column()
+
         title = data['title']
         col_headers = data['col_headers']
         row_headers = data['row_headers']
@@ -88,6 +97,31 @@ class XlsxDoc:
             self._next_column()
 
         self._first_column()
+        self._next_row()
+
+    def write_image(self, img_path):
+        self.sheet.merge_cells(
+            start_row=self.x,
+            end_row=self.x,
+            start_column=self.y,
+            end_column=self.y + XlsxDoc.IMG_NUM_OF_COLS - 1
+        )
+
+        img_row = self.sheet.row_dimensions[self.x]
+        img_row.height = XlsxDoc.IMG_ROW_HEIGHT
+
+        img = Image(img_path)
+
+        img.anchor = self.sheet.cell(
+            row=self.x,
+            column=self.y
+        ).coordinate
+
+        img.width = XlsxDoc.IMG_WIDTH
+        img.height = XlsxDoc.IMG_HEIGHT
+
+        self.sheet.add_image(img)
+        self._move_column(XlsxDoc.IMG_NUM_OF_COLS)
 
     def save(self, dest_path):
         self.workbook.save(dest_path)

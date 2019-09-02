@@ -18,9 +18,7 @@ class MockAthenaQuery:
         return
 
     def retrieve_result(self):
-        result = [MockAthenaQuery.counter + i for i in range(4)]
-        MockAthenaQuery.counter += 4
-        return result
+        return dict()
 
     def get_downloaded_result(self):
         return self.retrieve_result()

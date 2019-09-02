@@ -5,10 +5,17 @@ import copy
 
 
 class DocSpec:
-    def __init__(self, db_name, db_table, sheet_specs, use_mocks=False):
+    def __init__(
+            self,
+            db_name,
+            db_table,
+            sheet_specs,
+            map_dir,
+            use_mocks=False):
         self.db_name = db_name
         self.db_table = db_table
         self.sheet_specs = sheet_specs
+        self.map_dir = map_dir
         self.use_mocks = use_mocks
 
     def execute(self):
@@ -26,8 +33,13 @@ class DocSpec:
     def write_to_doc(self, dest_path):
         doc = XlsxDoc()
 
+        img_dir = self.map_dir + '\\' + self.db_name
+
         for sheet_spec in self.sheet_specs:
-            sheet_spec.write_to_doc(doc)
+            sheet_spec.write_to_doc(
+                doc=doc,
+                img_dir=img_dir
+            )
 
         doc_path = dest_path + '\\' + self.db_name + '_analiza.xlsx'
 

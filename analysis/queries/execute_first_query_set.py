@@ -141,6 +141,7 @@ IMG_HEIGHT = 300
 IMG_ROW_HEIGHT = 250
 IMG_WIDTH = 400
 
+
 def run():
     connection = None
     cursor = None
