@@ -61,4 +61,4 @@ def run(map_dir_name, files):
 
                 plt.close(fig)
 
-        print('Map generated')
+        print('Maps generated')

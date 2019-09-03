@@ -1,7 +1,9 @@
 from maps.geo.generate_geojson import generate_geojson
 from aws.athena_query import AthenaQuery
 from sql.sql_builder import SqlBuilder
+from restrictions.acm_total_percip_restriction import AcmTotalPercipRestriction
 import uuid
+import os
 
 
 DEFAULT_PROPS = dict({
@@ -18,35 +20,44 @@ DEFAULT_PROPS = dict({
 })
 
 
-def execute_query(db, table):
-
-    query = 'SELECT location AS location, COUNT(*) AS count'
+def execute_query(db, table, restrictions):
+    fields = ['location AS location', 'COUNT(*) AS count']
 
     for field in 't2mean2m_delta', 'tmax2m_delta', 'tmin2m_delta':
-        query += ', AVG({field}) AS {field}_avg, AVG(ABS({field})) AS {field}_abs_avg,' \
-                 ' STDDEV_POP({field}) AS {field}_std_dev'\
-            .format(field=field)
+        fields += [
+            'AVG({field}) AS {field}_avg'.format(field=field),
+            'AVG(ABS({field})) AS {field}_abs_avg'.format(field=field),
+            'STDDEV_POP({field}) AS {field}_std_dev'.format(field=field)
+        ]
 
-    query += ' FROM ' + table
+    sql_builder = SqlBuilder() \
+        .fields(fields) \
+        .table(table) \
+        .with_junk_filter()
 
-    query += ' WHERE ' + SqlBuilder.CLEANER_CLAUSE
+    for restriction in restrictions:
+        restriction.extend_where_clause(sql_builder)
 
-    query += ' GROUP BY location'
+    sql_builder.group_by('location')
 
     athena_query = AthenaQuery(
         db=db,
-        sql=query,
+        sql=sql_builder.build(),
         output_key='geojson_v2_' + str(uuid.uuid4())
     )
 
     return athena_query.execute_and_wait_for_result()
 
 
-def run(db, table):
+def run(db, table, rain_restriction=None):
 
     props = dict()
 
-    data = execute_query(db, table)
+    restrictions = []
+    if rain_restriction:
+        restrictions.append(AcmTotalPercipRestriction(rain_restriction))
+
+    data = execute_query(db, table, restrictions)
 
     for row in data:
         location = int(row['location'])
@@ -68,6 +79,13 @@ def run(db, table):
 
     print('Generating GeoJSON')
 
-    generate_geojson('maps/geo/data/second_analysis/' + db + '.geojson', props, DEFAULT_PROPS)
+    suffixes = ''
+    for restriction in restrictions:
+        suffixes += restriction.suffix()
+
+    out_dir = 'maps/geo/data/second_analysis' + suffixes
+    os.makedirs(name=out_dir, exist_ok=True)
+
+    generate_geojson(out_dir + '/' + db + '.geojson', props, DEFAULT_PROPS)
 
     print('GeoJSON generated')

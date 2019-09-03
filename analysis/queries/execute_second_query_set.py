@@ -4,6 +4,7 @@ from specification.table_spec import TableSpec
 from specification.region_spec import RegionSpec
 from specification.hours_spec import HoursSpec
 from specification.hour_spec_list import HourSpecList
+from restrictions.acm_total_percip_restriction import AcmTotalPercipRestriction
 
 DEST_PATH = 'D:\\workspace\\MGR\\second_analysis'
 MAP_DIR = 'D:\\workspace\\MGR\\ksgmet-etl\\maps'
@@ -11,9 +12,20 @@ MAP_IMG_DIR = 'D:\\workspace\\MGR\\maps\\second_analysis'
 OVERVIEW_MAP_PATH = 'D:\\workspace\\MGR\\maps\\regions'
 
 
-def run(db, table):
+def run(db, table, rain_restriction):
 
     print('Executing second query set')
+
+    map_img_dir = MAP_IMG_DIR
+    dest_path = DEST_PATH
+
+    restrictions = []
+    if rain_restriction:
+        restrictions.append(AcmTotalPercipRestriction(rain_restriction))
+
+    for restriction in restrictions:
+        map_img_dir += restriction.suffix()
+        dest_path += restriction.suffix()
 
     hour_specs = HourSpecList(hour_specs=[
         HoursSpec(
@@ -124,8 +136,9 @@ def run(db, table):
     doc_spec = DocSpec(
         db_name=db,
         db_table=table,
-        use_mocks=False,
-        map_dir=MAP_IMG_DIR,
+        use_mocks=True,
+        map_dir=map_img_dir,
+        restrictions=restrictions,
         sheet_specs=[
             SheetSpec(
                 name='Wszystkie dane',
@@ -221,4 +234,4 @@ def run(db, table):
 
     print('Saving results')
 
-    doc_spec.write_to_doc(DEST_PATH)
+    doc_spec.write_to_doc(dest_path)

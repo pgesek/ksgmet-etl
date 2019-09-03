@@ -2,6 +2,7 @@ from aws.athena_query_builder import AthenaQueryBuilder
 from sql.sql_builder import SqlBuilder
 from xlsx.xlsx_doc import XlsxDoc
 import copy
+import os
 
 
 class DocSpec:
@@ -11,17 +12,22 @@ class DocSpec:
             db_table,
             sheet_specs,
             map_dir,
+            restrictions=None,
             use_mocks=False):
         self.db_name = db_name
         self.db_table = db_table
         self.sheet_specs = sheet_specs
         self.map_dir = map_dir
         self.use_mocks = use_mocks
+        self.restrictions = restrictions if restrictions else []
 
     def execute(self):
         sql_builder = SqlBuilder()\
             .with_junk_filter()\
             .table(self.db_table)
+
+        for restriction in self.restrictions:
+            restriction.extend_where_clause(sql_builder)
 
         athena_builder = AthenaQueryBuilder()\
             .build_mocks(self.use_mocks)\
@@ -40,6 +46,8 @@ class DocSpec:
                 doc=doc,
                 img_dir=img_dir
             )
+
+        os.makedirs(name=dest_path, exist_ok=True)
 
         doc_path = dest_path + '\\' + self.db_name + '_analiza.xlsx'
 

@@ -19,13 +19,13 @@ FIRST_ANALYSIS_FILES = [
 ]
 
 #run_first_query_set()
-run_second_query_set('ksgmet-test', 'test')
-#generate_delta_maps(
-#    map_dir_name='second_analysis',
-#    files=['ksgmet-test', 'ksgmet-may', 'ksgmet-november']
-#)
+#run_second_query_set('ksgmet-may', 'may')
+generate_delta_maps(
+    map_dir_name='second_analysis_rain_min_0.5',
+    files=['ksgmet-test', 'ksgmet-may', 'ksgmet-november']
+)
 #generate_rectangles_map()
 #generate_region_map()
 #generate_geojson_first_analysis()
-#generate_geojson_second_analysis('ksgmet-november', 'november')
+#generate_geojson_second_analysis('ksgmet-may', 'may', 0.5)
 #generate_rectangles()
