@@ -136,7 +136,7 @@ def run(db, table, rain_restriction):
     doc_spec = DocSpec(
         db_name=db,
         db_table=table,
-        use_mocks=True,
+        use_mocks=False,
         map_dir=map_img_dir,
         restrictions=restrictions,
         sheet_specs=[
