@@ -29,7 +29,7 @@ class ErrorAnalysisDoc:
                 xlsx_doc=xlsx_doc
             )
 
-        doc_path = target_doc_dir + '\\' '_analiza_bledow.xlsx'
+        doc_path = target_doc_dir + '\\' 'analiza_bledow.xlsx'
 
         print('Saving results to: ' + doc_path)
 

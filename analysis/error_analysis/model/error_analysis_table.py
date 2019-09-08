@@ -9,7 +9,7 @@ class ErrorAnalysisTable:
         sql_builder\
             .fields([field.to_sql_field(self.field) for field in analysis_fields])\
             .group_by('ABS({}_delta) > 2.0'.format(self.field)) \
-            .order_by('ABS({}_delta) > 2.0'.format(self.field))
+            .order_by('ABS({}_delta) > 2.0 ASC'.format(self.field))
 
         athena_query = athena_builder.build(
             sql=sql_builder.build(),
