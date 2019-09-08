@@ -7,7 +7,7 @@ from maps.region_map import run as generate_region_map
 from maps.geo.generate_geojson_first_analysis import run as generate_geojson_first_analysis
 from maps.geo.generate_geojson_second_analysis import run as generate_geojson_second_analysis
 from maps.geo.generate_rectangles import run as generate_rectangles
-
+from error_analysis.error_analysis_query import run as run_error_analysis
 
 load_dotenv()
 
@@ -19,7 +19,7 @@ FIRST_ANALYSIS_FILES = [
 ]
 
 #run_first_query_set()
-run_second_query_set('ksgmet-june', 'june', rain_restriction=None)
+#run_second_query_set('ksgmet-june', 'june', rain_restriction=None)
 #generate_delta_maps(
 #    map_dir_name='second_analysis',
 #    files=['ksgmet-june']
@@ -29,3 +29,4 @@ run_second_query_set('ksgmet-june', 'june', rain_restriction=None)
 #generate_geojson_first_analysis()
 #generate_geojson_second_analysis('ksgmet-june', 'june', 0.5)
 #generate_rectangles()
+run_error_analysis()

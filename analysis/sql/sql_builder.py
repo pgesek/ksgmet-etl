@@ -31,6 +31,9 @@ class SqlBuilder:
         self.query += ' GROUP BY ' + fields
         return self
 
+    def order_by(self, fields):
+        self.query += ' ORDER BY ' + fields
+
     def with_junk_filter(self):
         self.where(SqlBuilder.CLEANER_CLAUSE)
         return self
