@@ -10,10 +10,11 @@ class ByLengthQuery(ErrorRestrictedQuery):
             .fields(
                 [
                     'COUNT(*) AS count',
-                    'prediction_length AS prediction_length'
+                    'prediction_length AS prediction_length',
                     '(COUNT(*) * 100.00 / {error_count}) AS percentage'
                     .format(error_count=error_item_count)
                 ])\
-            .group_by('prediction_length')
+            .group_by('prediction_length')\
+            .order_by('prediction_length ASC')
 
-        return super().execute_on_athena(sql_builder.build())
+        return super()._execute_on_athena(sql_builder.build())

@@ -89,7 +89,9 @@ class XlsxDoc:
 
         for i in range(len(row_headers) - 1):
             for j in range(len(col_headers)):
-                self._write_cell(content[i][j])
+                content_cell = self._write_cell(content[i][j])
+                content_cell.alignment = Alignment(horizontal='left')
+
                 self._next_column()
 
             self._next_row()

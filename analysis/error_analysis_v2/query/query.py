@@ -13,7 +13,7 @@ class Query:
             .with_junk_filter()\
             .table(self.table)
 
-    def execute_on_athena(self, sql):
+    def _execute_on_athena(self, sql):
         athena_builder = AthenaQueryBuilder()\
             .with_db(self.db)
 

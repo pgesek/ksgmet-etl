@@ -33,6 +33,7 @@ class SqlBuilder:
 
     def order_by(self, fields):
         self.query += ' ORDER BY ' + fields
+        return self
 
     def with_junk_filter(self):
         self.where(SqlBuilder.CLEANER_CLAUSE)

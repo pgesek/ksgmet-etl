@@ -10,6 +10,6 @@ class CountQuery(ErrorRestrictedQuery):
         sql_builder = super().sql_builder()\
             .fields(['COUNT(*) as count'])
 
-        result = super().execute_on_athena(sql_builder.build())
+        result = super()._execute_on_athena(sql_builder.build())
 
         return result[0]['count']

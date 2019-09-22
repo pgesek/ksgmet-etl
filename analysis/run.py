@@ -8,6 +8,7 @@ from maps.geo.generate_geojson_first_analysis import run as generate_geojson_fir
 from maps.geo.generate_geojson_second_analysis import run as generate_geojson_second_analysis
 from maps.geo.generate_rectangles import run as generate_rectangles
 from error_analysis.error_analysis_query import run as run_error_analysis
+from error_analysis_v2.by_length_error_analysis import run as error_by_length
 
 load_dotenv()
 
@@ -29,4 +30,5 @@ FIRST_ANALYSIS_FILES = [
 #generate_geojson_first_analysis()
 #generate_geojson_second_analysis('ksgmet-june', 'june', 0.5)
 #generate_rectangles()
-run_error_analysis()
+#run_error_analysis()
+error_by_length()

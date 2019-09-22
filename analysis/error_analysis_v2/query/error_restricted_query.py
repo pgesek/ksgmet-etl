@@ -10,7 +10,7 @@ class ErrorRestrictedQuery(Query):
 
     def sql_builder(self):
         return super().sql_builder()\
-            .where('{field} >= {error}'.format(
+            .where('{field}_delta >= {error}'.format(
                 field=self.field,
                 error=self.error_threshold
                 )
