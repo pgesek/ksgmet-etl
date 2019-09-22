@@ -37,7 +37,7 @@ def generate_geojson(filename, prop_dict, default_props):
             props = dict(default_props) if default_props else {}
             loc_id = calc_location_id(lon_index, lat_index)
             if loc_id in prop_dict:
-                props = dict(prop_dict[loc_id])
+                props = {**props, **prop_dict[loc_id]}
 
             add_region_props(props, loc_id, region_ids_dict)
             add_old_region_props(props, lon_index, lat_index)

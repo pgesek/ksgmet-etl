@@ -1,8 +1,8 @@
 class SqlBuilder:
 
-    CLEANER_CLAUSE = 'tmin2m_predicted > 273 AND tmin2m_actual > 273 AND tmin2m_delta < 50 AND '\
-                   'tmax2m_predicted > 273 AND tmax2m_actual > 273 AND tmax2m_delta < 50 AND '\
-                   't2mean2m_predicted > 273 AND t2mean2m_actual > 273 AND t2mean2m_delta < 50'
+    CLEANER_CLAUSE = 'tmin2m_predicted > 200 AND tmin2m_actual > 200 AND tmin2m_delta < 50 AND '\
+                   'tmax2m_predicted > 200 AND tmax2m_actual > 200 AND tmax2m_delta < 50 AND '\
+                   't2mean2m_predicted > 200 AND t2mean2m_actual > 200 AND t2mean2m_delta < 50'
 
     def __init__(self):
         self.query = 'SELECT ${fields} FROM ${table}'

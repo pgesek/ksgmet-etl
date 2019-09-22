@@ -2,14 +2,17 @@ from .query import Query
 
 
 class ByLengthCountQuery(Query):
-    def __init__(self, db, table):
+    def __init__(self, db, table, field):
         super().__init__(db, table)
+        self.field = field
 
     def execute(self):
         sql_builder = super().sql_builder()\
             .fields([
-                'COUNT(*) as count',
-                'prediction_length as prediction_length'
+                'COUNT(*) AS count',
+                'prediction_length AS prediction_length',
+                'AVG({field}_delta) AS avg'.format(field=self.field),
+                'AVG(ABS({field}_delta)) AS avg_abs'.format(field=self.field)
             ])\
             .group_by('prediction_length')\
             .order_by('prediction_length ASC')

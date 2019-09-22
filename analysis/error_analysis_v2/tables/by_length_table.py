@@ -3,17 +3,17 @@ from error_analysis_v2.query.by_length_query import ByLengthQuery
 from error_analysis_v2.query.by_length_count_query import ByLengthCountQuery
 from .table_display import TableDisplay
 from error_analysis_v2.charts.bar_chart import generate_bar_chart
+from .table import Table
 
 
-class ByLengthTable:
+class ByLengthTable(Table):
     def __init__(self, field, error_threshold):
-        self.field = field
-        self.error_threshold = error_threshold
+        super().__init__(field, error_threshold)
 
-    def execute(self, xlsx_doc, db, table, dest_path):
+    def execute(self, xlsx_doc, db, db_table, dest_path):
         count_query = CountQuery(
             db=db,
-            table=table,
+            table=db_table,
             error_threshold=self.error_threshold,
             field=self.field
         )
@@ -22,14 +22,15 @@ class ByLengthTable:
 
         by_length_count_query = ByLengthCountQuery(
             db=db,
-            table=table
+            table=db_table,
+            field=self.field
         )
 
         by_length_counts = by_length_count_query.execute()
 
         by_length_query = ByLengthQuery(
             db=db,
-            table=table,
+            table=db_table,
             error_threshold=self.error_threshold,
             field=self.field
         )
@@ -43,17 +44,22 @@ class ByLengthTable:
 
         error_count_row = [int(row['count']) for row in result]
         header_row = [row['prediction_length'] + 'h' for row in result]
+        avg_row = [float(row['avg']) for row in by_length_counts]
+        avg_abs_row = [float(row['avg_abs']) for row in by_length_counts]
 
         data = dict([
             ('title', 'Pole: ' + self.field),
             ('col_headers', header_row),
-            ('row_headers', ['Długość prognozy', 'Liczba', "Omylność"]),
-            ('content', [error_count_row, percentage_of_error_row])
+            ('row_headers', ['Długość prognozy', 'Liczba błędów > 2.0',
+                             'Procent błędów większych niż 2.0', 'Średnia błędów',
+                             'Średnia bezwzględna błędów']),
+            ('content', [error_count_row, percentage_of_error_row,
+                         avg_row, avg_abs_row])
         ])
 
         xlsx_doc.write_table(data)
 
-        chart_path = dest_path + '\\' + table + '_' + self.field + '_percent_of_error.png'
+        chart_path = dest_path + '\\' + db_table + '_' + self.field + '_percent_of_error.png'
 
         generate_bar_chart(
             legend=tuple(header_row),
