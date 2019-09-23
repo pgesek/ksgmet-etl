@@ -62,7 +62,7 @@ class ByLengthTable(Table):
 
         xlsx_doc.write_table(data)
 
-        chart_path = dest_path + '\\' + db_table + '_' + self.field + '_percent_of_error.png'
+        chart_path = os.path.join(dest_path, db_table + '_' + self.field + '_percent_of_error.png')
 
         os.makedirs(name=dest_path, exist_ok=True)
 

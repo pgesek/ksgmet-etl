@@ -59,8 +59,7 @@ class ByTimeTable(Table):
 
         xlsx_doc.write_table(data)
 
-        chart_path = dest_path + '\\' + db_table + '_' +\
-            self.field + '_percent_of_error_time.png'
+        chart_path = os.path.join(dest_path, db_table + '_' + self.field + '_percent_of_error_time.png')
 
         os.makedirs(name=dest_path, exist_ok=True)
 

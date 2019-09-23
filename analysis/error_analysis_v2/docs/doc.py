@@ -24,4 +24,4 @@ class Doc:
             )
 
         os.makedirs(name=dest_path, exist_ok=True)
-        xlsx_doc.save(dest_path + '\\' + self.doc_name + '.xlsx')
+        xlsx_doc.save(os.path.join(dest_path, self.doc_name + '.xlsx'))
