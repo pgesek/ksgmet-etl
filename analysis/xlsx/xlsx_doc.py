@@ -101,16 +101,23 @@ class XlsxDoc:
         self._first_column()
         self._next_row()
 
-    def write_image(self, img_path):
+    def write_image(
+            self,
+            img_path,
+            img_width=IMG_WIDTH,
+            img_height=IMG_HEIGHT,
+            img_row_height=IMG_ROW_HEIGHT,
+            img_num_of_cols=IMG_NUM_OF_COLS
+    ):
         self.sheet.merge_cells(
             start_row=self.x,
             end_row=self.x,
             start_column=self.y,
-            end_column=self.y + XlsxDoc.IMG_NUM_OF_COLS - 1
+            end_column=self.y + img_num_of_cols - 1
         )
 
         img_row = self.sheet.row_dimensions[self.x]
-        img_row.height = XlsxDoc.IMG_ROW_HEIGHT
+        img_row.height = img_row_height
 
         img = Image(img_path)
 
@@ -119,8 +126,8 @@ class XlsxDoc:
             column=self.y
         ).coordinate
 
-        img.width = XlsxDoc.IMG_WIDTH
-        img.height = XlsxDoc.IMG_HEIGHT
+        img.width = img_width
+        img.height = img_height
 
         self.sheet.add_image(img)
         self._move_column(XlsxDoc.IMG_NUM_OF_COLS)

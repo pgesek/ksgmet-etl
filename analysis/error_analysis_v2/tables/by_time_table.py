@@ -67,4 +67,10 @@ class ByTimeTable(Table):
             path=chart_path
         )
 
-        xlsx_doc.write_image(chart_path)
+        xlsx_doc.write_image(
+            img_path=chart_path,
+            img_width=1024,
+            img_height=600,
+            img_row_height=500,
+            img_num_of_cols=4
+        )

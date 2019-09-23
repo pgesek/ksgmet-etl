@@ -55,13 +55,13 @@ FIRST_ANALYSIS_FILES = [
 #generate_rectangles()
 #run_error_analysis()
 #error_by_length()
-#error_by_time()
+error_by_time()
 
 #generate_geojson_error_analysis('ksgmet-november', 'november')
 #generate_geojson_error_analysis('ksgmet-may', 'may')
 #generate_geojson_error_analysis('ksgmet-june', 'june')
 #
-generate_error_maps(
-    map_dir_name='error_analysis',
-    files=['ksgmet-november']
-)
+#generate_error_maps(
+#    map_dir_name='error_analysis',
+#    files=['ksgmet-november']
+#)
