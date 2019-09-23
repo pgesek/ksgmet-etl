@@ -4,6 +4,8 @@ from error_analysis_v2.query.by_length_count_query import ByLengthCountQuery
 from .table_display import TableDisplay
 from error_analysis_v2.charts.bar_chart import generate_bar_chart
 from .table import Table
+from itertools import zip_longest
+import os
 
 
 class ByLengthTable(Table):
@@ -38,8 +40,9 @@ class ByLengthTable(Table):
         result = by_length_query.execute(count)
 
         percentage_of_error_row = []
-        for count_row, result_row in zip(by_length_counts, result):
-            percentage = TableDisplay.print_percentage(float(result_row['count']) / float(count_row['count']) * 100.00)
+        for count_row, result_row in zip_longest(by_length_counts, result):
+            err_count = float(result_row['count']) if result_row else 0.0
+            percentage = TableDisplay.print_percentage(err_count / float(count_row['count']) * 100.00)
             percentage_of_error_row.append(percentage)
 
         error_count_row = [int(row['count']) for row in result]
@@ -61,6 +64,8 @@ class ByLengthTable(Table):
 
         chart_path = dest_path + '\\' + db_table + '_' + self.field + '_percent_of_error.png'
 
+        os.makedirs(name=dest_path, exist_ok=True)
+
         generate_bar_chart(
             legend=tuple(header_row),
             values=[float(percent[:-1]) for percent in percentage_of_error_row],
@@ -68,4 +73,10 @@ class ByLengthTable(Table):
             path=chart_path
         )
 
-        xlsx_doc.write_image(chart_path)
+        xlsx_doc.write_image(
+            img_path=chart_path,
+            img_width=1200,
+            img_height=600,
+            img_row_height=500,
+            img_num_of_cols=4
+        )

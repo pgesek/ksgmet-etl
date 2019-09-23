@@ -4,6 +4,8 @@ from error_analysis_v2.charts.bar_chart import generate_bar_chart
 from .table import Table
 from error_analysis_v2.query.by_time_error_restricted_query import ByTimeErrorRestrictedQuery
 from specification.hour_spec_list import HourSpecList
+from itertools import zip_longest
+import os
 
 
 class ByTimeTable(Table):
@@ -32,9 +34,9 @@ class ByTimeTable(Table):
         avg_err_row = []
         avg_abs_err_row = []
 
-        for by_time_row, by_time_err_row in zip(by_time_res, by_time_err_res):
+        for by_time_row, by_time_err_row in zip_longest(by_time_res, by_time_err_res):
             count = int(by_time_row['count'])
-            err_count = int(by_time_err_row['count'])
+            err_count = int(by_time_err_row['count'] if by_time_err_row else 0)
 
             count_row.append(int(count))
             err_count_row.append(int(err_count))
@@ -60,6 +62,8 @@ class ByTimeTable(Table):
         chart_path = dest_path + '\\' + db_table + '_' +\
             self.field + '_percent_of_error_time.png'
 
+        os.makedirs(name=dest_path, exist_ok=True)
+
         generate_bar_chart(
             legend=tuple(header_row),
             values=[float(percent[:-1]) for percent in err_percentage_row],
@@ -69,7 +73,7 @@ class ByTimeTable(Table):
 
         xlsx_doc.write_image(
             img_path=chart_path,
-            img_width=1024,
+            img_width=1200,
             img_height=600,
             img_row_height=500,
             img_num_of_cols=4

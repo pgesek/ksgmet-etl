@@ -6,7 +6,7 @@ class HourList:
     def __init__(self):
         self.specs = HourSpecList(
             [HoursSpec(
-                    made_on_hour_range=(hour * 60 + 1, (hour + 1) * 60 + 1),
+                    made_on_hour_range=(hour * 60 + 1, (hour + 1) * 60),
                     time_header=HourList.header(hour)
             ) for hour in range(0, 24)]
         )
