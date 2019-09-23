@@ -8,7 +8,7 @@ class HourList:
             [HoursSpec(
                     made_on_hour_range=(hour * 60 + 1, (hour + 1) * 60 + 1),
                     time_header=HourList.header(hour)
-            ) for hour in range(0, 23)]
+            ) for hour in range(0, 24)]
         )
 
     def build_case_list(self):
@@ -19,7 +19,7 @@ class HourList:
 
     @staticmethod
     def header_list():
-        return [HourList.header(hour) for hour in range(0, 23)]
+        return [HourList.header(hour) for hour in range(0, 24)]
 
     @staticmethod
     def header(hour):
