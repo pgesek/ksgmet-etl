@@ -51,9 +51,10 @@ def run(map_dir_name, files):
                                    ax=ax,
                                    edgecolor='black')
 
-            plt.title('Pole: {field}, {title}'.format(field=field,
-                                                      title='Procent błędów > 2.0, pole: '
-                                                            + field))
+            plt.title('Pole: {field}, {title}'.format(
+                field=field,
+                title='Procent błędów > 2.0, pole: '
+            ))
 
             path = 'D:\\workspace\\MGR\\maps\\{dir_name}\\{file}'\
                 .format(dir_name=map_dir_name, file=file)

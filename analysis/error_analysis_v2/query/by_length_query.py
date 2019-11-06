@@ -6,15 +6,20 @@ class ByLengthQuery(ErrorRestrictedQuery):
         super().__init__(db, table, error_threshold, field)
 
     def execute(self, error_item_count):
-        sql_builder = super().sql_builder()\
+        sql_builder = super().sql_builder() \
             .fields(
-                [
-                    'COUNT(*) AS count',
-                    'prediction_length AS prediction_length',
-                    '(COUNT(*) * 100.00 / {error_count}) AS percentage'
-                    .format(error_count=error_item_count)
-                ])\
-            .group_by('prediction_length')\
+            [
+                'COUNT(*) AS count',
+                'prediction_length AS prediction_length',
+
+                '(COUNT(*) * 100.00 / {error_count}) AS percentage'
+                .format(error_count=error_item_count),
+
+                'AVG({field}_delta) AS avg'.format(field=self.field),
+                'AVG(ABS({field}_delta)) AS avg_abs'.format(field=self.field)
+
+            ]) \
+            .group_by('prediction_length') \
             .order_by('prediction_length ASC')
 
         return super()._execute_on_athena(sql_builder.build())

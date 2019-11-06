@@ -13,8 +13,6 @@ class ByTimeQuery(Query):
         sql_builder = super().sql_builder()\
             .fields([
                 'COUNT(*) AS count',
-                'AVG({field}_delta) AS avg'.format(field=self.field),
-                'AVG(ABS({field}_delta)) AS avg_abs'.format(field=self.field),
                 hour_list.build_case_list()
             ])\
             .group_by(hour_list.build_group_by())\

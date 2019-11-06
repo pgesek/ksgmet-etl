@@ -45,18 +45,19 @@ class ByLengthTable(Table):
             percentage = TableDisplay.print_percentage(err_count / float(count_row['count']) * 100.00)
             percentage_of_error_row.append(percentage)
 
+        total_count_row = [int(row['count']) for row in by_length_counts]
         error_count_row = [int(row['count']) for row in result]
         header_row = [row['prediction_length'] + 'h' for row in result]
-        avg_row = [float(row['avg']) for row in by_length_counts]
-        avg_abs_row = [float(row['avg_abs']) for row in by_length_counts]
+        avg_row = [float(row['avg']) for row in result]
+        avg_abs_row = [float(row['avg_abs']) for row in result]
 
         data = dict([
             ('title', 'Pole: ' + self.field),
             ('col_headers', header_row),
-            ('row_headers', ['Długość prognozy', 'Liczba błędów > 2.0',
+            ('row_headers', ['Długość prognozy', 'Ilość prognoz', 'Liczba błędów > 2.0',
                              'Procent błędów większych niż 2.0', 'Średnia błędów',
                              'Średnia bezwzględna błędów']),
-            ('content', [error_count_row, percentage_of_error_row,
+            ('content', [total_count_row, error_count_row, percentage_of_error_row,
                          avg_row, avg_abs_row])
         ])
 

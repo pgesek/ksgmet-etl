@@ -10,9 +10,7 @@ class ByLengthCountQuery(Query):
         sql_builder = super().sql_builder()\
             .fields([
                 'COUNT(*) AS count',
-                'prediction_length AS prediction_length',
-                'AVG({field}_delta) AS avg'.format(field=self.field),
-                'AVG(ABS({field}_delta)) AS avg_abs'.format(field=self.field)
+                'prediction_length AS prediction_length'
             ])\
             .group_by('prediction_length')\
             .order_by('prediction_length ASC')

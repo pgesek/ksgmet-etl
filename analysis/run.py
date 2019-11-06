@@ -35,12 +35,7 @@ FIRST_ANALYSIS_FILES = [
 
 #generate_delta_maps(
 #    map_dir_name='second_analysis',
-#    files=['ksgmet-november', 'ksgmet-may']
-#)
-
-#generate_delta_maps(
-#    map_dir_name='second_analysis_rain_min_0.5',
-#    files=['ksgmet-november', 'ksgmet-may']
+#    files=['ksgmet-november', 'ksgmet-may', 'ksgmet-june']
 #)
 
 #run_first_query_set()
@@ -63,5 +58,5 @@ error_by_time()
 #
 #generate_error_maps(
 #    map_dir_name='error_analysis',
-#    files=['ksgmet-november']
+#    files=['ksgmet-november', 'ksgmet-may', 'ksgmet-june']
 #)

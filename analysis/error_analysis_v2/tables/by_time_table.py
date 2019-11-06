@@ -44,8 +44,8 @@ class ByTimeTable(Table):
             percentage = err_count / count * 100.00
             err_percentage_row.append(TableDisplay.print_percentage(percentage))
 
-            avg_err_row.append(float(by_time_row['avg']))
-            avg_abs_err_row.append(float(by_time_row['avg_abs']))
+            avg_err_row.append(float(by_time_err_row['avg']))
+            avg_abs_err_row.append(float(by_time_err_row['avg_abs']))
 
         data = dict([
             ('title', 'Pole: ' + self.field),

@@ -7,7 +7,7 @@ import os
 FIELDS = ['t2mean2m_delta', 'tmax2m_delta', 'tmin2m_delta']
 SUFFIXES = ['_avg', '_abs_avg', '_std_dev']
 
-TITLES = {'_avg':  'Średnia delta', '_abs_avg': 'Średnie delta wartości bezwzględnej',
+TITLES = {'_avg':  'Średnia delta', '_abs_avg': 'Średnia delta bezwzględna',
           '_std_dev': 'Odchylenie standardowe'}
 
 
